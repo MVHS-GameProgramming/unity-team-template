@@ -4,7 +4,6 @@ This repository follows a structured Git workflow. All changes must go through
 a Pull Request before being merged into `main`. Direct pushes to `main` are
 not allowed.
 
----
 
 ## Branch Naming
 
@@ -17,7 +16,7 @@ Examples:
 - `jordan/enemy-spawner`
 - `alex/audio-menu-music`
 
----
+
 
 ## Daily Workflow
 
@@ -28,23 +27,22 @@ Examples:
 5. **Push your branch** to GitHub when you're done for the day or ready for review
 6. **Open a Pull Request** when your feature is complete and tested
 
----
 
 ## Commit Messages
 
 Write commit messages that describe *what changed and why*, not just *what you did*.
 
 Good:
-Add player jump with coyote time
-Player can now jump for 0.1s after walking off a ledge.
-Feels much better in playtesting.
+- `Add player jump with coyote time`
+- `Player can now jump for 0.1s after walking off a ledge.`
+- `Feels much better in playtesting.`
 
 Too vague:
-fixed stuff
-updated script
-changes
+- `fixed stuff`
+- `updated script`
+- `changes`
 
----
+
 
 ## Pull Requests
 
@@ -54,12 +52,14 @@ When your feature is ready to merge:
 2. Go to the repository on GitHub
 3. Click **Compare & pull request**
 4. Write a short description of what your PR does
-5. Create a PR and assign your teammate as a reviewer
-6. Wait for your teammate to approve the PR, then merge it yourself
-7. **Squash and merge** into `main`
-8. Delete your branch after merging
+5. Assign a teammate as the reviewer
+6. Submit the pull request
+7. **Wait for your reviewer to approve** — do not merge your own PR
+8. Once approved, **you** (the original developer) merge it
+9. **Squash and merge** into `main`
+10. Delete your branch after merging
 
----
+
 
 ## Asset Organization
 
@@ -78,7 +78,45 @@ to check your assets before committing.
 | Models | `Assets/Project/Models/` |
 | ScriptableObjects | `Assets/Project/ScriptableObjects/` |
 
----
+
+
+## Asset Workflow — Git vs. Asset Pipeline Manager
+
+This project uses **two separate systems** for managing files:
+
+| File Type | System | Notes |
+|---|---|---|
+| Scripts (`.cs`) | Git | Text — full history tracked |
+| Scenes (`.unity`) | Git | Unity YAML — can be merged |
+| Prefabs (`.prefab`) | Git | Unity YAML — can be merged |
+| Materials (`.mat`) | Git | Unity YAML — references assets by GUID |
+| Animations (`.anim`, `.controller`) | Git | Unity YAML |
+| Meta files (`.meta`) | Git | Carry Unity GUIDs — **never delete these** |
+| Textures (`.png`, `.jpg`, etc.) | MVHS Asset Pipeline Manager | Binary — not committed to Git |
+| Audio (`.wav`, `.mp3`, etc.) | MVHS Asset Pipeline Manager | Binary — not committed to Git |
+| 3D Models (`.fbx`, `.obj`, etc.) | MVHS Asset Pipeline Manager | Binary — not committed to Git |
+| Fonts (`.ttf`, `.otf`) | MVHS Asset Pipeline Manager | Binary — not committed to Git |
+
+### Why binary assets are not in Git
+
+Binary files like images and audio cannot be merged or diffed, and they permanently bloat a repository. Instead, binary assets are shared as `.unitypackage` exports using the **Asset Pipeline Manager** (`Tools > MVHS > Asset Pipeline`).
+
+### If you were absent
+
+Import the catch-up package your teacher posted for that class date. 
+1. Go to the **Releases** tab on GitHub
+2. Download the `.unitypackage` for the current date
+3. In Unity: `Tools > MVHS > Asset Pipeline > Import Package`
+4. Then commit with the message:  
+   Catch up to [date]
+   
+Do **not** use packages to sync with teammates — use Git (pull/merge) for that.
+
+### About `.meta` files
+
+Every asset in Unity has a `.meta` file that stores its GUID. These **are** committed to Git even though the asset itself is not. This is correct — Unity uses the GUID to link assets together. Never delete `.meta` files.
+
+
 
 ## End of Semester
 
